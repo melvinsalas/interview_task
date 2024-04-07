@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               if (!loggingIn)
                 ElevatedButton(
                   onPressed: () {
-                    StreamAuthScope.of(context).signIn('test-user');
+                    // StreamAuthScope.of(context).signIn('test-user');
                     setState(() {
                       loggingIn = true;
                     });

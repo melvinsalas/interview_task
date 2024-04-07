@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/auth_bloc.dart';
 import 'package:interview_task/screens/screens.dart';
+import 'package:interview_task/stream_auth.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -14,7 +15,7 @@ class LoginScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthenticatedState) {
-          context.go('/${HomeScreen.path}');
+          context.go('/home');
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
@@ -35,6 +36,7 @@ class LoginScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       context.read<AuthBloc>().add(LoginEvent('kminchelle', '0lelplR'));
+                      // StreamAuthScope.of(context).signIn('test-user');
                     },
                     child: const Text('Login'),
                   ),

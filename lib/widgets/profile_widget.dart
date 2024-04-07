@@ -1,10 +1,37 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/bloc.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
+
+  // const ProfileWidget({Key key}) : super(key: key);
+
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start the timer when the widget is initialized
+    _timer = Timer.periodic(Duration(seconds: 10), (_) {
+      // Call LoginByTokenEvent every 10 seconds
+      context.read<AuthBloc>().add(LoginByTokenEvent());
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed to prevent memory leaks
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +55,8 @@ class ProfileWidget extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(LogoutEvent());
-                    context.go('/');
+                    // StreamAuthScope.of(context).signOut();
+                    // context.go('/');
                   },
                   child: const Text('Logout'),
                 ),
