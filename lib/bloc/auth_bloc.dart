@@ -27,6 +27,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLoginByToken(_, Emitter<AuthState> emit) async {
     try {
+      Logger().i('Login by token');
+
       final token = TokenStorage.getToken();
       final response = await http.get(
         Uri.parse(aboutMe),
@@ -74,8 +76,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (response.statusCode != 200) {
         Logger().i('Error: ${response.statusCode}');
-        emit(AuthErrorState('Error: ${response.statusCode}'));
-        return;
+        try {
+          var message = json.decode(response.body)['message'];
+          emit(AuthErrorState(message));
+          return;
+        } catch (e) {
+          Logger().e('Error: $e');
+          emit(AuthErrorState('Error: $e'));
+          return;
+        }
       }
 
       final responseData = json.decode(response.body);
@@ -99,7 +108,7 @@ class LoginEvent extends AuthEvent {
   final String username;
   final String password;
 
-  LoginEvent(this.username, this.password);
+  LoginEvent({required this.username, required this.password});
 }
 
 class LogoutEvent extends AuthEvent {}

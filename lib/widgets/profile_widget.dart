@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:interview_task/bloc/bloc.dart';
+import 'package:interview_task/bloc/auth_bloc.dart';
+import 'package:interview_task/utils/text_field_custom.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
 
-  // const ProfileWidget({Key key}) : super(key: key);
-
   @override
-  _ProfileWidgetState createState() => _ProfileWidgetState();
+  State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
@@ -19,16 +18,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   void initState() {
     super.initState();
-    // Start the timer when the widget is initialized
-    _timer = Timer.periodic(Duration(seconds: 10), (_) {
-      // Call LoginByTokenEvent every 10 seconds
+    _timer = Timer.periodic(const Duration(seconds: 10), (_) {
       context.read<AuthBloc>().add(LoginByTokenEvent());
     });
   }
 
   @override
   void dispose() {
-    // Cancel the timer when the widget is disposed to prevent memory leaks
     _timer.cancel();
     super.dispose();
   }
@@ -48,25 +44,40 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   height: 300,
                   child: Image(image: NetworkImage(state.response.image)),
                 ),
-                Text('Name: ${state.response.firstName}'),
-                Text('Last Name: ${state.response.lastName}'),
-                Text('Email: ${state.response.email}'),
-                Text('Gender: ${state.response.gender}'),
+                const SizedBox(height: 16),
+                TextFieldCustom(
+                  hintText: '${state.response.firstName} ${state.response.lastName}',
+                  enabled: false,
+                  prefixIcon: const Icon(Icons.person),
+                ),
+                const SizedBox(height: 16),
+                TextFieldCustom(
+                  hintText: state.response.email,
+                  enabled: false,
+                  prefixIcon: const Icon(Icons.alternate_email),
+                ),
+                const SizedBox(height: 16),
+                TextFieldCustom(
+                  hintText: state.response.gender,
+                  enabled: false,
+                  prefixIcon: const Icon(Icons.wc),
+                ),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(LogoutEvent());
-                    // StreamAuthScope.of(context).signOut();
-                    // context.go('/');
                   },
-                  child: const Text('Logout'),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 1,
+                    minimumSize: const Size(200, 50),
+                  ),
+                  child: const Text('Logout', style: TextStyle(fontSize: 20)),
                 ),
               ],
             ),
           );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }
