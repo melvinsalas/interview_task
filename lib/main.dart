@@ -1,33 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/bloc.dart';
-import 'package:interview_task/screens/screens.dart';
-import 'package:logger/web.dart';
+import 'package:interview_task/routes/app_router.dart';
 
-void main() => runApp(const MyApp());
-
-final GoRouter _router = GoRouter(
-  routes: <RouteBase>[
-    GoRoute(
-      path: '/${HomeScreen.path}',
-      builder: (_, __) => const HomeScreen(),
-      routes: <RouteBase>[
-        GoRoute(path: LoginScreen.path, builder: (_, __) => const LoginScreen()),
-        GoRoute(path: ProductsScreen.path, builder: (_, __) => const ProductsScreen()),
-      ],
-      redirect: (context, state) async {
-        final status = context.read<AuthBloc>().state;
-        if (status is UnauthenticatedState) {
-          Logger().i('Redirecting to /login');
-          return '/${LoginScreen.path}';
-        }
-        Logger().i('Redirecting to ${HomeScreen.path}');
-        return null;
-      },
-    ),
-  ],
-);
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -40,7 +18,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ProductsBloc()),
       ],
       child: MaterialApp.router(
-        routerConfig: _router,
+        title: 'Interview Task',
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+        routerConfig: AppRouter.dashboardRouter,
       ),
     );
   }

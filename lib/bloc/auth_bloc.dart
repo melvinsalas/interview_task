@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +9,7 @@ import 'package:interview_task/utils/token_storage.dart';
 import 'package:interview_task/utils/urls.dart';
 import 'package:logger/logger.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> with ChangeNotifier {
   AuthBloc() : super(UnauthenticatedState()) {
     on<LoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
@@ -30,18 +31,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      emit(AuthLoadingState());
+      // emit(AuthLoadingState());
       final token = TokenStorage.getToken();
       final response = await http.get(
         Uri.parse(aboutMe),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode != 200) {
         Logger().i('Error: ${response.statusCode}');
-        emit(AuthErrorState('Error: ${response.statusCode}'));
+        TokenStorage.deleteToken();
+        emit(UnauthenticatedState());
         return;
       }
 
@@ -56,6 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogout(LogoutEvent event, Emitter<AuthState> emit) {
+    Logger().i('Logout');
     TokenStorage.deleteToken();
     emit(UnauthenticatedState());
   }
@@ -70,15 +71,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final response = await http.post(
         Uri.parse(loginUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: json.encode(request.toJson()),
       );
 
       if (response.statusCode != 200) {
-        Logger().i('Error: ${response.statusCode}');
-        emit(AuthErrorState('Error: ${response.statusCode}'));
+        add(LogoutEvent());
         return;
       }
 

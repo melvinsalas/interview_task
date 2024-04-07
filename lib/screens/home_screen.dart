@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:interview_task/screens/screens.dart';
+import 'package:interview_task/routes/sub-routes/products_screen_router.dart';
 import 'package:interview_task/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
             const ProfileWidget(),
             ElevatedButton(
               onPressed: () {
-                context.go('/${ProductsScreen.path}');
+                GoRouter.of(context).go(ProductsRoutes.products);
               },
               child: const Text('Products'),
             ),

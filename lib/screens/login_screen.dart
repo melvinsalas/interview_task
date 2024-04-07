@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/auth_bloc.dart';
-import 'package:interview_task/screens/screens.dart';
+import 'package:interview_task/routes/sub-routes/home_screen_router.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -14,7 +14,7 @@ class LoginScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthenticatedState) {
-          context.go('/${HomeScreen.path}');
+          GoRouter.of(context).go(HomeRoutes.home);
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(

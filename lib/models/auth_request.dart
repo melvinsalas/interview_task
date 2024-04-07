@@ -6,7 +6,7 @@ class AuthRequest {
   AuthRequest({
     required this.username,
     required this.password,
-    this.expiresInMins = 60,
+    this.expiresInMins = 1,
   });
 
   Map<String, dynamic> toJson() {
@@ -21,7 +21,7 @@ class AuthRequest {
     return AuthRequest(
       username: json['username'],
       password: json['password'],
-      expiresInMins: int.parse(json['expiresInMins']),
+      expiresInMins: json['expiresInMins'],
     );
   }
 }

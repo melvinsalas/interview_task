@@ -1,10 +1,23 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/bloc.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +41,7 @@ class ProfileWidget extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     context.read<AuthBloc>().add(LogoutEvent());
-                    context.go('/');
+                    // GoRouter.of(context).go(LogoutRoutes.logout);
                   },
                   child: const Text('Logout'),
                 ),
@@ -41,5 +54,18 @@ class ProfileWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    // Detener el temporizador cuando el widget se elimina
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+      context.read<AuthBloc>().add(LoginByTokenEvent());
+    });
   }
 }
