@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_task/bloc/auth_bloc.dart';
+import 'package:interview_task/utils/elevated_button_custom.dart';
 import 'package:interview_task/utils/text_field_custom.dart';
 
 class ProfileWidget extends StatefulWidget {
@@ -62,16 +63,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   enabled: false,
                   prefixIcon: const Icon(Icons.wc),
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton(
+                const SizedBox(height: 8),
+                ElevatedButtonCustom(
                   onPressed: () {
                     context.read<AuthBloc>().add(LogoutEvent());
                   },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 1,
-                    minimumSize: const Size(200, 50),
-                  ),
-                  child: const Text('Logout', style: TextStyle(fontSize: 20)),
+                  text: 'Logout',
                 ),
               ],
             ),

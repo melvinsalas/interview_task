@@ -19,6 +19,20 @@ class LoginScreen extends StatelessWidget {
           if (state is AuthLoadingState) {
             return const Center(child: CircularProgressIndicator());
           }
+          if (state is AuthLoadingTokenState) {
+            return const Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Restoring session...'),
+                    SizedBox(height: 16),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            );
+          }
           return LoginFormWidget();
         },
       ),

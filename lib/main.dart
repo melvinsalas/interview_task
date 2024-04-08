@@ -6,9 +6,9 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:interview_task/bloc/auth_bloc.dart';
 import 'package:interview_task/bloc/products_bloc.dart';
+import 'package:interview_task/screens/sale_screen.dart';
 import 'package:interview_task/screens/home_screen.dart';
 import 'package:interview_task/screens/login_screen.dart';
-import 'package:interview_task/screens/products_screen.dart';
 
 void main() => runApp(App());
 
@@ -18,6 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GetIt.instance.registerLazySingleton<AuthBloc>(() => AuthBloc());
+    GetIt.instance.registerLazySingleton<ProductsBloc>(() => ProductsBloc());
 
     return MultiBlocProvider(
       providers: [
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
           create: (context) => GetIt.instance<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => ProductsBloc(),
+          create: (context) => GetIt.instance<ProductsBloc>(),
         ),
       ],
       child: MaterialApp.router(
@@ -44,7 +45,7 @@ class App extends StatelessWidget {
     routes: <GoRoute>[
       GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
-      GoRoute(path: '/products', builder: (_, __) => const ProductsScreen()),
+      GoRoute(path: '/sale', builder: (_, __) => const SaleScreen()),
     ],
 
     /// Redirect the user to the login screen if they are not logged in.
@@ -52,7 +53,10 @@ class App extends StatelessWidget {
       final bool loggedIn = GetIt.instance<AuthBloc>().state is AuthenticatedState;
       final bool loggingIn = state.matchedLocation == '/login';
 
-      if (!loggedIn) return '/login';
+      if (!loggedIn) {
+        GetIt.instance<ProductsBloc>().add(ResetProductsEvent());
+        return '/login';
+      }
       if (loggingIn) return '/home';
 
       return null;

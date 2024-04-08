@@ -19,9 +19,10 @@ class _ProductsWidgetState extends State<ProductsWidget> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 10), (_) {
+    _timer = Timer.periodic(const Duration(seconds: 30), (_) {
       context.read<ProductsBloc>().add(FetchProductsEvent());
     });
+    context.read<ProductsBloc>().add(FetchProductsEvent());
   }
 
   @override
@@ -48,9 +49,7 @@ class _ProductsWidgetState extends State<ProductsWidget> {
             itemBuilder: (context, index) {
               final product = products[index];
               return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(product.thumbnail),
-                ),
+                leading: CircleAvatar(backgroundImage: NetworkImage(product.thumbnail)),
                 title: Text(product.title, maxLines: 1, overflow: TextOverflow.ellipsis),
                 subtitle: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

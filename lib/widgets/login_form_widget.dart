@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:interview_task/bloc/auth_bloc.dart';
+import 'package:interview_task/utils/elevated_button_custom.dart';
 import 'package:interview_task/utils/text_field_custom.dart';
 
 class LoginFormWidget extends StatelessWidget {
@@ -45,14 +46,9 @@ class LoginFormWidget extends StatelessWidget {
               style: ElevatedButton.styleFrom(elevation: 0),
               child: const Text('Need help? Autofill the form'),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
+            ElevatedButtonCustom(
               onPressed: () => _onLogin(context),
-              style: ElevatedButton.styleFrom(
-                elevation: 1,
-                minimumSize: const Size(200, 50),
-              ),
-              child: const Text('Login', style: TextStyle(fontSize: 20)),
+              text: 'Login',
             ),
           ],
         ),
