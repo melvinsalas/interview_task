@@ -11,28 +11,17 @@ class LoginScreen extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthErrorState) {
+          /// Show a snackbar with the error message.
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthLoadingState) {
+            /// Show a loading indicator while the login process is in progress.
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is AuthLoadingTokenState) {
-            return const Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Restoring session...'),
-                    SizedBox(height: 16),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            );
-          }
+
           return LoginFormWidget();
         },
       ),

@@ -11,9 +11,11 @@ class ProductsScreen extends StatelessWidget {
     return BlocListener<ProductsBloc, ProductsState>(
       listener: (context, state) {
         if (state is ProductsErrorState) {
+          /// Show a snackbar with the error message.
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
         }
         if (state is ProductsInitState) {
+          /// Fetch the products when the screen is initialized.
           context.read<ProductsBloc>().add(FetchProductsEvent());
         }
       },

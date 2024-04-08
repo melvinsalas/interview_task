@@ -125,8 +125,6 @@ class AuthLoadingState extends AuthState {}
 
 class UnauthenticatedState extends AuthState {}
 
-class AuthLoadingTokenState extends AuthState {}
-
 class AuthenticatedState extends AuthState {
   final AuthResponse response;
 
