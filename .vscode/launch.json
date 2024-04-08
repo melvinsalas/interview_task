@@ -7,19 +7,8 @@
         {
             "name": "interview_task",
             "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "interview_task (profile mode)",
-            "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "interview_task (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
+            "args": ["--web-renderer", "html"]
         }
     ]
 }
