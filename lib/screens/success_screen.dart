@@ -16,7 +16,7 @@ class SuccessScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 100),
-            Text('Payment Successful'),
+            Text('Sale Successful'),
           ],
         ),
       ),

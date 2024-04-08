@@ -93,7 +93,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
             context.read<ProductsBloc>().add(UpdateProductEvent(id: widget.product.id));
             Navigator.of(context).pop();
           },
-          child: const Text('Delete'),
+          child: const Text('Remove'),
         ),
         TextButton(
           onPressed: () {
